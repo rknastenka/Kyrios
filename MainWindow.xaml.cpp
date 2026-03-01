@@ -81,7 +81,7 @@ namespace winrt::WindToDo::implementation
         presenter.IsMinimizable(false);
         presenter.IsMaximizable(false);
 
-        appWindow.Title(L"WindToDo");
+        appWindow.Title(L"Froggy");
         appWindow.Resize({ 380, 320 });
 
         // Strip window chrome for a clean popup look
@@ -149,7 +149,7 @@ namespace winrt::WindToDo::implementation
         nid.uFlags   = NIF_ICON | NIF_MESSAGE | NIF_TIP;
         nid.uCallbackMessage = WM_TRAYICON;
         nid.hIcon    = hIcon;
-        wcscpy_s(nid.szTip, L"WindToDo");
+        wcscpy_s(nid.szTip, L"Froggy");
         Shell_NotifyIconW(NIM_ADD, &nid);
     }
 
@@ -228,7 +228,7 @@ namespace winrt::WindToDo::implementation
                 GetCursorPos(&pt);
 
                 HMENU menu = CreatePopupMenu();
-                AppendMenuW(menu, MF_STRING, IDM_QUIT, L"Quit WindToDo");
+                AppendMenuW(menu, MF_STRING, IDM_QUIT, L"Quit Froggy");
 
                 SetForegroundWindow(hwnd);
                 UINT cmd = TrackPopupMenu(menu,
