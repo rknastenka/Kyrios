@@ -1,0 +1,95 @@
+name: Build & Release MSIX
+
+# Triggers:
+#  - Push a tag like "v1.0.0"  →  automatic release
+#  - Actions tab → Run workflow  →  manual release with a version you type
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Version tag for this release (e.g. v1.0.0)'
+        required: true
+        default: 'v1.0.0'
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+
+    steps:
+      # 1. Source
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Build tools 
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v2
+
+      # 3. Restore NuGet packages
+      - name: Restore NuGet packages
+        run: nuget restore packages.config -PackagesDirectory packages -SolutionDirectory .
+
+      # 4. Certificate (Base64-encoded PFX stored as GitHub Secret) 
+      - name: Decode signing certificate
+        shell: pwsh
+        run: |
+          $pfxBytes = [Convert]::FromBase64String("${{ secrets.SIGNING_CERTIFICATE }}")
+          [IO.File]::WriteAllBytes("$env:GITHUB_WORKSPACE\WindToDo_Cert.pfx", $pfxBytes)
+
+      - name: Import cert & export .cer for end-users
+        id: cert
+        shell: pwsh
+        env:
+          PFX_PASSWORD: ${{ secrets.SIGNING_CERTIFICATE_PASSWORD }}
+        run: |
+          $password = ConvertTo-SecureString $env:PFX_PASSWORD -AsPlainText -Force
+          $cert = Import-PfxCertificate `
+              -FilePath "$env:GITHUB_WORKSPACE\WindToDo_Cert.pfx" `
+              -CertStoreLocation Cert:\CurrentUser\My `
+              -Password $password
+          # .cer lets users trust the cert with two clicks
+          Export-Certificate -Cert $cert -FilePath "$env:GITHUB_WORKSPACE\WindToDo.cer" -Type CERT
+          echo "THUMBPRINT=$($cert.Thumbprint)" >> $env:GITHUB_ENV
+
+      # 5. Build MSIX 
+      - name: Build MSIX (Release x64)
+        shell: pwsh
+        run: |
+          msbuild WindToDo.vcxproj `
+            /p:Configuration=Release `
+            /p:Platform=x64 `
+            /p:AppxPackageDir="$env:GITHUB_WORKSPACE\AppxPackages\" `
+            /p:UapAppxPackageBuildMode=SideloadOnly `
+            /p:AppxBundle=Never `
+            /p:GenerateAppxPackageOnBuild=true `
+            /p:PackageCertificateThumbprint="${{ env.THUMBPRINT }}" `
+            /m
+
+      # 6. Locate output 
+      - name: Find MSIX path
+        id: msix
+        shell: pwsh
+        run: |
+          $msix = Get-ChildItem -Recurse -Filter "*.msix" -Path "$env:GITHUB_WORKSPACE\AppxPackages" |
+                  Sort-Object LastWriteTime -Descending | Select-Object -First 1
+          if (-not $msix) { Write-Error "No .msix found!"; exit 1 }
+          echo "MSIX_PATH=$($msix.FullName)" >> $env:GITHUB_ENV
+          echo "MSIX_NAME=$($msix.Name)"     >> $env:GITHUB_ENV
+
+      # 7. Upload artifacts — download from Actions tab, then create a Release manually
+      - name: Upload MSIX
+        uses: actions/upload-artifact@v4
+        with:
+          name: WindToDo-MSIX
+          path: ${{ env.MSIX_PATH }}
+
+      - name: Upload Certificate
+        uses: actions/upload-artifact@v4
+        with:
+          name: WindToDo-Certificate
+          path: ${{ github.workspace }}/WindToDo.cer
