@@ -15,6 +15,10 @@ No clutter, no distractions, no setup wizards or learning curves.<br>
 
 ---
 
+<p align="center">
+  <img src="public/bnrr.png" alt="froggy themes" />
+</p>
+
 <table>
 <tr>
 <td width="50%" valign="top">
