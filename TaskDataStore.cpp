@@ -8,6 +8,8 @@ using namespace winrt::Windows::Foundation::Collections;
 
 namespace winrt::WindToDo
 {
+    std::mutex TaskDataStore::s_fileMutex;
+
     // ---------------------------------------------------------------------------
     //  File helpers – use %LOCALAPPDATA%\WindToDo\ (works unpackaged)
     // ---------------------------------------------------------------------------
@@ -74,6 +76,8 @@ namespace winrt::WindToDo
     IAsyncAction TaskDataStore::SaveTasksAsync(
         IObservableVector<WindToDo::TaskItem> const& tasks)
     {
+        std::lock_guard lock(s_fileMutex);
+
         // Read existing file first to preserve other keys (e.g. windowRect)
         JsonObject root;
         auto filePath = GetDataFilePath();
@@ -93,6 +97,8 @@ namespace winrt::WindToDo
     IAsyncOperation<IObservableVector<WindToDo::TaskItem>>
         TaskDataStore::LoadTasksAsync()
     {
+        std::lock_guard lock(s_fileMutex);
+
         auto tasks = winrt::single_threaded_observable_vector<WindToDo::TaskItem>();
 
         auto filePath = GetDataFilePath();
@@ -114,6 +120,8 @@ namespace winrt::WindToDo
     IAsyncAction TaskDataStore::SaveWindowRectAsync(
         int32_t x, int32_t y, int32_t width, int32_t height)
     {
+        std::lock_guard lock(s_fileMutex);
+
         JsonObject root;
         auto filePath = GetDataFilePath();
         auto text = ReadFileContents(filePath);
@@ -134,6 +142,8 @@ namespace winrt::WindToDo
     IAsyncOperation<JsonObject>
         TaskDataStore::LoadWindowRectAsync()
     {
+        std::lock_guard lock(s_fileMutex);
+
         auto filePath = GetDataFilePath();
         auto text = ReadFileContents(filePath);
         if (!text.empty())

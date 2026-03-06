@@ -6,6 +6,7 @@
 #include <winrt/Windows.Foundation.Collections.h>
 
 #include <filesystem>
+#include <mutex>
 
 namespace winrt::WindToDo
 {
@@ -37,5 +38,7 @@ namespace winrt::WindToDo
             WindToDo::TaskItem const& task);
         static WindToDo::TaskItem JsonToTask(
             Windows::Data::Json::JsonObject const& obj);
+
+        static std::mutex s_fileMutex;
     };
 }
