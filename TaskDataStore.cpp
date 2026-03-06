@@ -25,8 +25,7 @@ namespace winrt::WindToDo
             std::filesystem::create_directories(folder);
             return folder;
         }
-        // Fallback: next to the executable
-        return std::filesystem::current_path();
+        throw std::runtime_error("GetDataFolder: failed to resolve %LOCALAPPDATA%");
     }
 
     std::filesystem::path TaskDataStore::GetDataFilePath()

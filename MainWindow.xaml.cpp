@@ -321,6 +321,11 @@ namespace winrt::WindToDo::implementation
         auto text = TaskInputBox().Text();
         if (text.empty()) return;
 
+        // Cap input length to prevent excessive memory/storage usage
+        constexpr uint32_t kMaxTaskLength = 500;
+        if (text.size() > kMaxTaskLength)
+            text = hstring(std::wstring_view(text).substr(0, kMaxTaskLength));
+
         GUID guid;
         CoCreateGuid(&guid);
         wchar_t guidStr[40];
