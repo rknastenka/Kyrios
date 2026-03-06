@@ -47,7 +47,7 @@ namespace winrt::WindToDo::implementation
         // Start hidden; the tray icon brings the window up
         if (m_hwnd)
         {
-            SetWindowPos(m_hwnd, nullptr, -32000, -32000, 380, 320,
+            SetWindowPos(m_hwnd, nullptr, -32000, -32000, kWindowWidth, kWindowHeight,
                 SWP_NOZORDER | SWP_NOACTIVATE);
         }
     }
@@ -118,7 +118,7 @@ namespace winrt::WindToDo::implementation
             appWindow.SetIcon(iconId);
         }
 
-        appWindow.Resize({ 380, 320 });
+        appWindow.Resize({ kWindowWidth, kWindowHeight });
 
         // Strip window chrome for a clean popup look
         {
@@ -246,7 +246,7 @@ namespace winrt::WindToDo::implementation
                     RECT iconRect = { 0 };
                     Shell_NotifyIconGetRect(&nii, &iconRect);
 
-                    int H = 320, W = 380;
+                    int H = kWindowHeight, W = kWindowWidth;
                     int x = iconRect.left + (iconRect.right - iconRect.left) / 2 - W / 2;
                     int y = iconRect.top - H - 10;
 

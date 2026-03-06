@@ -7,6 +7,8 @@
 constexpr UINT WM_TRAYICON = WM_APP + 1;
 constexpr UINT TRAY_UID    = 1;
 constexpr UINT IDM_QUIT    = 1002;
+constexpr int  kWindowWidth  = 380;
+constexpr int  kWindowHeight = 320;
 
 namespace winrt::WindToDo::implementation
 {
