@@ -308,6 +308,7 @@ namespace winrt::WindToDo::implementation
             Tasks().Append(t);
         }
         m_isLoading = false;
+        UpdateEmptyState();
     }
 
     winrt::fire_and_forget MainWindow::SaveTasks()
@@ -343,6 +344,7 @@ namespace winrt::WindToDo::implementation
         Tasks().Append(task);
         TaskInputBox().Text(L"");
         SaveTasks();
+        UpdateEmptyState();
     }
 
     void MainWindow::AddTask_Click(
@@ -375,6 +377,7 @@ namespace winrt::WindToDo::implementation
         {
             Tasks().RemoveAt(index);
             SaveTasks();
+            UpdateEmptyState();
         }
     }
 
@@ -383,6 +386,14 @@ namespace winrt::WindToDo::implementation
         [[maybe_unused]] RoutedEventArgs const& e)
     {
         SaveTasks();
+    }
+
+    void MainWindow::UpdateEmptyState()
+    {
+        auto vis = (m_tasks && m_tasks.Size() > 0)
+            ? Microsoft::UI::Xaml::Visibility::Collapsed
+            : Microsoft::UI::Xaml::Visibility::Visible;
+        EmptyStateText().Visibility(vis);
     }
 
     // Slide-up + fade-in when the popup appears

@@ -56,6 +56,7 @@ namespace winrt::WindToDo::implementation
         void SetupTrayIcon();
         void RemoveTrayIcon();
         void PlayShowAnimation();
+        void UpdateEmptyState();
 
         static LRESULT CALLBACK SubclassProc(
             HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam,

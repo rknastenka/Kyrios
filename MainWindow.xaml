@@ -65,6 +65,16 @@
                 </ListView.ItemTemplate>
             </ListView>
 
+            <!-- Empty state -->
+            <TextBlock Grid.Row="0"
+                       x:Name="EmptyStateText"
+                       FontFamily="Comic Sans MS"
+                       FontStyle="Italic"
+                       Opacity="0.5"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Visibility="Collapsed"><Run Text="Wow. No tasks."/><LineBreak/><Run Text="You're either very productive or very avoidant &#x3a;)"/></TextBlock>
+
             <!-- Add-task input -->
             <Grid Grid.Row="1" ColumnDefinitions="*,Auto" ColumnSpacing="8">
                 <TextBox x:Name="TaskInputBox"
