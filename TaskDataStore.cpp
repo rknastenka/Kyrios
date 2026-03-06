@@ -159,46 +159,4 @@ namespace winrt::WindToDo
 
         co_return tasks;
     }
-
-    IAsyncAction TaskDataStore::SaveWindowRectAsync(
-        int32_t x, int32_t y, int32_t width, int32_t height)
-    {
-        std::lock_guard lock(s_fileMutex);
-
-        JsonObject root;
-        auto filePath = GetDataFilePath();
-        auto text = ReadFileContents(filePath);
-        if (!text.empty())
-            JsonObject::TryParse(hstring{ text }, root);
-
-        JsonObject rect;
-        rect.SetNamedValue(L"x", JsonValue::CreateNumberValue(x));
-        rect.SetNamedValue(L"y", JsonValue::CreateNumberValue(y));
-        rect.SetNamedValue(L"w", JsonValue::CreateNumberValue(width));
-        rect.SetNamedValue(L"h", JsonValue::CreateNumberValue(height));
-        root.SetNamedValue(L"windowRect", rect);
-
-        WriteFileContents(filePath, std::wstring{ root.Stringify() });
-        co_return;
-    }
-
-    IAsyncOperation<JsonObject>
-        TaskDataStore::LoadWindowRectAsync()
-    {
-        std::lock_guard lock(s_fileMutex);
-
-        auto filePath = GetDataFilePath();
-        auto text = ReadFileContents(filePath);
-        if (!text.empty())
-        {
-            JsonObject root;
-            if (JsonObject::TryParse(hstring{ text }, root) &&
-                root.HasKey(L"windowRect"))
-            {
-                co_return root.GetNamedObject(L"windowRect");
-            }
-        }
-
-        co_return nullptr;
-    }
 }

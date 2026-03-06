@@ -22,12 +22,6 @@ namespace winrt::WindToDo
             Windows::Foundation::Collections::IObservableVector<WindToDo::TaskItem>>
             LoadTasksAsync();
 
-        static Windows::Foundation::IAsyncAction SaveWindowRectAsync(
-            int32_t x, int32_t y, int32_t width, int32_t height);
-
-        static Windows::Foundation::IAsyncOperation<Windows::Data::Json::JsonObject>
-            LoadWindowRectAsync();
-
     private:
         static std::filesystem::path GetDataFolder();
         static std::filesystem::path GetDataFilePath();
