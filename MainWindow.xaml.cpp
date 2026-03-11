@@ -33,16 +33,7 @@ namespace winrt::froggy::implementation
         // Apply DWM dark mode to match the system theme
         ApplyDwmDarkMode();
 
-        // Re-apply when the user switches Windows light/dark theme
-        if (auto root = this->Content().try_as<Microsoft::UI::Xaml::FrameworkElement>())
-        {
-            root.ActualThemeChanged([this](
-                Microsoft::UI::Xaml::FrameworkElement const&,
-                Windows::Foundation::IInspectable const&)
-            {
-                ApplyDwmDarkMode();
-            });
-        }
+        // Theme-change callback is registered in SetupBackdrop()
 
         // Start hidden; the tray icon brings the window up
         if (m_hwnd)
@@ -68,7 +59,42 @@ namespace winrt::froggy::implementation
 
     void MainWindow::SetupBackdrop()
     {
-        // Reserved for future backdrop effects (e.g. Mica, Acrylic)
+        namespace Backdrops = Microsoft::UI::Composition::SystemBackdrops;
+
+        if (!Backdrops::DesktopAcrylicController::IsSupported())
+            return;
+
+        m_backdropConfig = Backdrops::SystemBackdropConfiguration();
+
+        // Set initial theme
+        if (auto root = this->Content().try_as<Microsoft::UI::Xaml::FrameworkElement>())
+        {
+            auto theme = root.ActualTheme();
+            m_backdropConfig.Theme(
+                theme == Microsoft::UI::Xaml::ElementTheme::Dark
+                    ? Backdrops::SystemBackdropTheme::Dark
+                    : Backdrops::SystemBackdropTheme::Light);
+
+            m_themeChangedRevoker = root.ActualThemeChanged(winrt::auto_revoke,
+                [this](Microsoft::UI::Xaml::FrameworkElement const& sender,
+                       Windows::Foundation::IInspectable const&)
+                {
+                    if (m_backdropConfig)
+                    {
+                        auto t = sender.ActualTheme();
+                        m_backdropConfig.Theme(
+                            t == Microsoft::UI::Xaml::ElementTheme::Dark
+                                ? Backdrops::SystemBackdropTheme::Dark
+                                : Backdrops::SystemBackdropTheme::Light);
+                    }
+                    ApplyDwmDarkMode();
+                });
+        }
+
+        m_acrylicController = Backdrops::DesktopAcrylicController();
+        m_acrylicController.SetSystemBackdropConfiguration(m_backdropConfig);
+        m_acrylicController.AddSystemBackdropTarget(
+            this->try_as<Microsoft::UI::Composition::ICompositionSupportsSystemBackdrop>());
     }
 
     void MainWindow::ApplyDwmDarkMode()
@@ -147,7 +173,7 @@ namespace winrt::froggy::implementation
             DwmSetWindowAttribute(m_hwnd, 34 /*DWMWA_BORDER_COLOR*/,
                 &none, sizeof(none));
 
-            MARGINS margins = { 0, 0, 0, 0 };
+            MARGINS margins = { -1, -1, -1, -1 };
             DwmExtendFrameIntoClientArea(m_hwnd, &margins);
         }
 

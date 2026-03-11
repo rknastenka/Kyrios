@@ -46,6 +46,13 @@ namespace winrt::froggy::implementation
         bool m_isLoading{ false };
         ULONGLONG m_lastDeactivateTime{ 0 };
 
+        Microsoft::UI::Composition::SystemBackdrops::DesktopAcrylicController
+            m_acrylicController{ nullptr };
+        Microsoft::UI::Composition::SystemBackdrops::SystemBackdropConfiguration
+            m_backdropConfig{ nullptr };
+        Microsoft::UI::Xaml::FrameworkElement::ActualThemeChanged_revoker
+            m_themeChangedRevoker{};
+
         void AddTaskFromInput();
         winrt::fire_and_forget SaveTasks();
         Windows::Foundation::IAsyncAction LoadTasksAsync();
