@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "TaskItem.g.h"
 
-namespace winrt::froggy::implementation
+namespace winrt::krisp::implementation
 {
     struct TaskItem : TaskItemT<TaskItem> {
 
@@ -39,7 +39,7 @@ namespace winrt::froggy::implementation
     };
 }
 
-namespace winrt::froggy::factory_implementation
+namespace winrt::krisp::factory_implementation
 {
     struct TaskItem : TaskItemT<TaskItem, implementation::TaskItem> {};
 }

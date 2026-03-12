@@ -20,7 +20,7 @@ using namespace winrt::Windows::Foundation::Collections;
 using namespace Microsoft::UI::Xaml;
 using namespace Microsoft::UI::Xaml::Input;
 
-namespace winrt::froggy::implementation
+namespace winrt::krisp::implementation
 {
     MainWindow::MainWindow()
     {
@@ -48,11 +48,11 @@ namespace winrt::froggy::implementation
         RemoveTrayIcon();
     }
 
-    IObservableVector<froggy::TaskItem> MainWindow::Tasks()
+    IObservableVector<krisp::TaskItem> MainWindow::Tasks()
     {
         if (!m_tasks)
         {
-            m_tasks = single_threaded_observable_vector<froggy::TaskItem>();
+            m_tasks = single_threaded_observable_vector<krisp::TaskItem>();
         }
         return m_tasks;
     }
@@ -132,7 +132,7 @@ namespace winrt::froggy::implementation
         presenter.IsMinimizable(false);
         presenter.IsMaximizable(false);
 
-        appWindow.Title(L"Froggy");
+        appWindow.Title(L"krisp");
 
         // Load the icon from the embedded Win32 resource (works unpackaged
         // without needing a loose .ico file next to the .exe).
@@ -211,7 +211,7 @@ namespace winrt::froggy::implementation
         nid.uFlags   = NIF_ICON | NIF_MESSAGE | NIF_TIP;
         nid.uCallbackMessage = WM_TRAYICON;
         nid.hIcon    = hIcon;
-        wcscpy_s(nid.szTip, L"Froggy");
+        wcscpy_s(nid.szTip, L"krisp");
         Shell_NotifyIconW(NIM_ADD, &nid);
     }
 
@@ -297,7 +297,7 @@ namespace winrt::froggy::implementation
                 GetCursorPos(&pt);
 
                 HMENU menu = CreatePopupMenu();
-                AppendMenuW(menu, MF_STRING, IDM_QUIT, L"Quit Froggy");
+                AppendMenuW(menu, MF_STRING, IDM_QUIT, L"Quit krisp");
 
                 SetForegroundWindow(hwnd);
                 UINT cmd = TrackPopupMenu(menu,
@@ -364,7 +364,7 @@ namespace winrt::froggy::implementation
         CoCreateGuid(&guid);
         wchar_t guidStr[40];
         StringFromGUID2(guid, guidStr, ARRAYSIZE(guidStr));
-        auto task = make<froggy::implementation::TaskItem>(
+        auto task = make<krisp::implementation::TaskItem>(
             hstring(guidStr), hstring(text));
 
         Tasks().Append(task);
@@ -396,7 +396,7 @@ namespace winrt::froggy::implementation
         [[maybe_unused]] RoutedEventArgs const& e)
     {
         auto button = sender.as<Microsoft::UI::Xaml::Controls::Button>();
-        auto item = button.DataContext().as<froggy::TaskItem>();
+        auto item = button.DataContext().as<krisp::TaskItem>();
 
         uint32_t index = 0;
         if (Tasks().IndexOf(item, index))

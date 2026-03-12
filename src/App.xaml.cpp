@@ -5,7 +5,7 @@
 using namespace winrt;
 using namespace Microsoft::UI::Xaml;
 
-namespace winrt::froggy::implementation
+namespace winrt::krisp::implementation
 {
     App::App()
     {

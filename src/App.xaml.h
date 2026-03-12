@@ -2,7 +2,7 @@
 
 #include "App.xaml.g.h"
 
-namespace winrt::froggy::implementation
+namespace winrt::krisp::implementation
 {
     struct App : AppT<App>
     {

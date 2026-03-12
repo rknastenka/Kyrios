@@ -1,4 +1,4 @@
-﻿namespace froggy
+﻿namespace krisp
 {
     [bindable]
     [default_interface]

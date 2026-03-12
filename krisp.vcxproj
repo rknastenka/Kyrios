@@ -17,8 +17,8 @@
     <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
     <MinimalCoreWin>true</MinimalCoreWin>
     <ProjectGuid>{78b455ba-060f-49ec-a275-693ae2cd964d}</ProjectGuid>
-    <ProjectName>froggy</ProjectName>
-    <RootNamespace>froggy</RootNamespace>
+    <ProjectName>krisp</ProjectName>
+    <RootNamespace>krisp</RootNamespace>
     <!--
       $(TargetName) should be same as $(RootNamespace) so that the produced binaries (.exe/.pri/etc.)
       have a name that matches the .winmd
@@ -161,7 +161,7 @@
     </Midl>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="src\froggy.rc" />
+    <ResourceCompile Include="src\krisp.rc" />
   </ItemGroup>
   <!--
     Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging

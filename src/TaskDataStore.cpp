@@ -6,12 +6,12 @@ using namespace winrt::Windows::Data::Json;
 using namespace winrt::Windows::Foundation;
 using namespace winrt::Windows::Foundation::Collections;
 
-namespace winrt::froggy
+namespace winrt::krisp
 {
     std::mutex TaskDataStore::s_fileMutex;
 
     // ---------------------------------------------------------------------------
-    //  File helpers – use %LOCALAPPDATA%\froggy\ (works unpackaged)
+    //  File helpers – use %LOCALAPPDATA%\krisp\ (works unpackaged)
     // ---------------------------------------------------------------------------
 
     std::filesystem::path TaskDataStore::GetDataFolder()
@@ -21,7 +21,7 @@ namespace winrt::froggy
         {
             std::filesystem::path folder{ appData };
             CoTaskMemFree(appData);
-            folder /= L"froggy";
+            folder /= L"krisp";
             std::filesystem::create_directories(folder);
             return folder;
         }
@@ -82,7 +82,7 @@ namespace winrt::froggy
 
     // ---------------------------------------------------------------------------
 
-    JsonObject TaskDataStore::TaskToJson(froggy::TaskItem const& task)
+    JsonObject TaskDataStore::TaskToJson(krisp::TaskItem const& task)
     {
         JsonObject obj;
         obj.SetNamedValue(L"id",          JsonValue::CreateStringValue(task.Id()));
@@ -92,7 +92,7 @@ namespace winrt::froggy
         return obj;
     }
 
-    froggy::TaskItem TaskDataStore::JsonToTask(JsonObject const& obj)
+    krisp::TaskItem TaskDataStore::JsonToTask(JsonObject const& obj)
     {
         auto id = obj.GetNamedString(L"id", L"");
         auto title = obj.GetNamedString(L"title", L"(untitled)");
@@ -117,7 +117,7 @@ namespace winrt::froggy
     }
 
     IAsyncAction TaskDataStore::SaveTasksAsync(
-        IObservableVector<froggy::TaskItem> const& tasks)
+        IObservableVector<krisp::TaskItem> const& tasks)
     {
         std::lock_guard lock(s_fileMutex);
 
@@ -137,12 +137,12 @@ namespace winrt::froggy
         co_return;
     }
 
-    IAsyncOperation<IObservableVector<froggy::TaskItem>>
+    IAsyncOperation<IObservableVector<krisp::TaskItem>>
         TaskDataStore::LoadTasksAsync()
     {
         std::lock_guard lock(s_fileMutex);
 
-        auto tasks = winrt::single_threaded_observable_vector<froggy::TaskItem>();
+        auto tasks = winrt::single_threaded_observable_vector<krisp::TaskItem>();
 
         auto filePath = GetDataFilePath();
         auto text = ReadFileContents(filePath);

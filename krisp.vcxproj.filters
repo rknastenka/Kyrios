@@ -33,6 +33,6 @@
     <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natstepfilter" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="src\froggy.rc" />
+    <ResourceCompile Include="src\krisp.rc" />
   </ItemGroup>
 </Project>

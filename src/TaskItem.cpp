@@ -5,7 +5,7 @@
 using namespace winrt;
 using namespace Microsoft::UI::Xaml::Data;
 
-namespace winrt::froggy::implementation
+namespace winrt::krisp::implementation
 {
     TaskItem::TaskItem(hstring const& id, hstring const& title)
         : m_id(id), m_title(title)
