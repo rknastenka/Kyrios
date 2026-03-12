@@ -93,6 +93,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)pch.pch</PrecompiledHeaderOutputFile>
+      <AdditionalIncludeDirectories>src;$(GeneratedFilesDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <WarningLevel>Level4</WarningLevel>
       <LanguageStandard Condition="'$(VisualStudioVersion)' &gt;= '18.0'">stdcpp20</LanguageStandard>
       <LanguageStandard Condition="'$(VisualStudioVersion)' &lt; '18.0'">stdcpp17</LanguageStandard>
@@ -122,57 +123,45 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="app.manifest" />
+    <Manifest Include="src\app.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="App.xaml.h">
-      <DependentUpon>App.xaml</DependentUpon>
+    <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\App.xaml.h">
+      <DependentUpon>src\App.xaml</DependentUpon>
     </ClInclude>
-    <ClInclude Include="MainWindow.xaml.h">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <ClInclude Include="src\MainWindow.xaml.h">
+      <DependentUpon>src\MainWindow.xaml</DependentUpon>
     </ClInclude>
-    <ClInclude Include="TaskDataStore.h" />
-    <ClInclude Include="TaskItem.h" />
+    <ClInclude Include="src\TaskDataStore.h" />
+    <ClInclude Include="src\TaskItem.h" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml" />
-    <Page Include="MainWindow.xaml" />
+    <ApplicationDefinition Include="src\App.xaml" />
+    <Page Include="src\MainWindow.xaml" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="pch.cpp">
+    <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="App.xaml.cpp">
-      <DependentUpon>App.xaml</DependentUpon>
+    <ClCompile Include="src\App.xaml.cpp">
+      <DependentUpon>src\App.xaml</DependentUpon>
     </ClCompile>
-    <ClCompile Include="MainWindow.xaml.cpp">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <ClCompile Include="src\MainWindow.xaml.cpp">
+      <DependentUpon>src\MainWindow.xaml</DependentUpon>
     </ClCompile>
     <ClCompile Include="$(GeneratedFilesDir)module.g.cpp" />
-    <ClCompile Include="TaskDataStore.cpp" />
-    <ClCompile Include="TaskItem.cpp" />
+    <ClCompile Include="src\TaskDataStore.cpp" />
+    <ClCompile Include="src\TaskItem.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="MainWindow.idl">
+    <Midl Include="src\MainWindow.idl">
       <SubType>Code</SubType>
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <DependentUpon>src\MainWindow.xaml</DependentUpon>
     </Midl>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="froggy.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Assets\LockScreenLogo.scale-200.png" />
-    <Image Include="Assets\SplashScreen.scale-200.png" />
-    <Image Include="Assets\Square150x150Logo.scale-200.png" />
-    <Image Include="Assets\Square44x44Logo.scale-200.png" />
-    <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
-    <Image Include="Assets\Square44x44Logo.targetsize-44_altform-unplated.png" />
-    <Image Include="Assets\Square44x44Logo.targetsize-48_altform-unplated.png" />
-    <Image Include="Assets\Square44x44Logo.targetsize-256_altform-unplated.png" />
-    <Image Include="Assets\StoreLogo.png" />
-    <Image Include="Assets\Wide310x150Logo.scale-200.png" />
+    <ResourceCompile Include="src\froggy.rc" />
   </ItemGroup>
   <!--
     Defining the "Msix" ProjectCapability here allows the Single-project MSIX Packaging
@@ -261,7 +250,7 @@
     <RemoveDir Directories="$(PriStagingDir)" />
     <MakeDir Directories="$(PriStagingDir)" />
     <!-- App XBF files -->
-    <Copy SourceFiles="$(OutDir)App.xbf;$(OutDir)MainWindow.xbf"
+    <Copy SourceFiles="$(OutDir)src\App.xbf;$(OutDir)src\MainWindow.xbf"
           DestinationFolder="$(PriStagingDir)" SkipUnchangedFiles="false" />
     <!-- App image assets -->
     <Copy SourceFiles="@(Image)"
