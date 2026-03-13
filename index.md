@@ -1,7 +1,7 @@
 <div align="center">
 
 <p align="">
-  <img src="docs/banner.png" width="670" alt="krisp Logo" />
+  <img src="banner.png" width="670" alt="krisp Logo" />
 </p>
 
 
@@ -33,9 +33,10 @@ Krisp is a lightweight Windows to-do list app that lives in your system tray. It
 4. Pin Krisp to your taskbar
 4. Add your tasks and start working.
 
-<!-- 
-## Windows Code-Signing Policy
-Free code signing on Windows binaries provided by SignPath.io, certificate by SignPath Foundation.
+<br>
+
+<img src="krisp.png">
+
 <br>
 <br>
 
