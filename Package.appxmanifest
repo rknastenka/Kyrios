@@ -13,8 +13,8 @@
     self-signed cert via "Package.appxmanifest > Packaging > Choose Certificate".
   -->
   <Identity
-    Name="KyriosDev.Kyrios"
-    Publisher="CN=KyriosDev"
+    Name="BanaTawalbeh.Kyrios"
+    Publisher="CN=49A26D8E-2279-4B6F-B85B-FA633DF441A3"
     Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="00000000-0000-0000-0000-000000000000"
@@ -22,7 +22,7 @@
 
   <Properties>
     <DisplayName>Kyrios</DisplayName>
-    <PublisherDisplayName>KyriosDev</PublisherDisplayName>
+    <PublisherDisplayName>Bana Tawalbeh</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 

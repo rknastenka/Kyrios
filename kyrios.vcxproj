@@ -90,9 +90,9 @@
   <PropertyGroup Label="UserMacros">
     <GenerateAppInstallerFile>True</GenerateAppInstallerFile>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
-    <PackageCertificateThumbprint>8ABDEF1E99C3801219BCE10DA7018D1B191A8EB0</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>27A1C37FF2D686FE8E28F9C801B4BBB293A4091F</PackageCertificateThumbprint>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
-    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
     <AppxBundle>Never</AppxBundle>
     <AppInstallerUri>https://rknastenka.github.io/Kyrios/</AppInstallerUri>
